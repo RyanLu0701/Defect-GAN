@@ -87,7 +87,3 @@ python main.py --dataset /path/to/dataset --batch_size 32 --epoch 2000 --size 12
 └── save_model/     # Saved model checkpoints (auto-created)
 ```
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-

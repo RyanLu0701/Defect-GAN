@@ -1,3 +1,4 @@
+```markdown
 # Defect-GAN Training Framework
 
 This repository provides a training framework for Defect-GAN, a generative adversarial network designed for defect image generation. The framework includes dataset preparation, model training, and image generation capabilities.
@@ -8,6 +9,7 @@ This repository provides a training framework for Defect-GAN, a generative adver
 - **GAN Model Implementation**: Includes a Generator and Discriminator optimized for defect image generation.
 - **Training Utilities**: Supports mixed precision training, learning rate scheduling, and loss visualization.
 - **Sample Image Generation**: Periodically generates sample images for qualitative evaluation.
+- **Batch Inference Tool**: A `sample.py` script for generating synthesized defect images from a folder of normal images and masks.
 
 ## Prerequisites
 
@@ -64,26 +66,54 @@ python main.py --dataset /path/to/dataset --batch_size 32 --epoch 2000 --size 12
 - `--size`: Image size for training (default: 128)
 - Other arguments are configurable in `main.py`.
 
-### Output
+### Inference (sample.py)
 
-- Models are saved every 5 epochs in the `save_model/` directory.
-- Generated sample images are stored in the `samples/` directory for qualitative evaluation.
+You can use `sample.py` to synthesize defect images from a folder of normal images and corresponding grayscale masks.
 
-### Customization
+#### Input Folder Format
 
-- Modify `dataset.py` to handle additional data preprocessing requirements.
-- Update model architectures in `model/` to experiment with custom designs.
-- Adjust training parameters in `main.py` and `trainer.py`.
+```
+your_input_dir/
+├── img001.png
+├── img001_mask.png
+├── img002.png
+├── img002_mask.png
+```
+
+#### Run Inference
+
+```bash
+python sample.py \
+  --checkpoint ./save_model/gen_epoch200.pth \
+  --input_dir ./your_input_dir \
+  --output_dir ./results \
+  --size 128 128 \
+  --device cuda
+```
+
+#### Output
+
+- The synthesized defect images will be saved to the specified `--output_dir`.
+
+---
 
 ## Directory Structure
 
 ```
 .
-├── dataset.py      # Dataset loader for defect images and masks
-├── main.py         # Entry point for training
-├── trainer.py      # Training loop and utilities
-├── model/          # GAN model implementations
-├── samples/        # Generated sample images (auto-created)
-└── save_model/     # Saved model checkpoints (auto-created)
+├── dataset.py        # Dataset loader for defect images and masks
+├── main.py           # Entry point for training
+├── trainer.py        # Training loop and utilities
+├── sample.py         # Batch inference script to generate defect images
+├── model/            # GAN model implementations
+├── samples/          # Generated sample images (auto-created)
+├── save_model/       # Saved model checkpoints (auto-created)
+└── requirements.txt  # Python dependencies
 ```
 
+---
+
+## Changelog
+
+### 2025/04/18
+- ✨ Added `sample.py` for batch inference
